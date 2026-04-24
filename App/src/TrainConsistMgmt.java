@@ -6,69 +6,63 @@ import java.util.List;
  * MAIN CLASS - TrainConsistMgmt
  * ============================================================
  *
- * Use Case 10: Count Total Seats in Train
+ * Use Case 12: Safety Compliance Check for Goods Bogies
  *
  * Description:
- * This class aggregates seating capacity of all bogies
- * into a single total using Stream reduce().
+ * Validates cargo safety rules using Stream allMatch().
+ *
+ * Rule:
+ * Cylindrical bogies must carry only Petroleum cargo.
  *
  * @author Krishna
- * @version 10.0
+ * @version 12.0
  * ============================================================
  */
 
 public class TrainConsistMgmt {
 
-    // Reusing Bogie class
-    static class Bogie {
-        String name;
-        int capacity;
+    // Goods Bogie class
+    static class GoodsBogie {
+        String type;
+        String cargo;
 
-        Bogie(String name, int capacity) {
-            this.name = name;
-            this.capacity = capacity;
+        GoodsBogie(String type, String cargo) {
+            this.type = type;
+            this.cargo = cargo;
         }
     }
 
     public static void main(String[] args) {
 
         System.out.println("====================================");
-        System.out.println("UC10 - Count Total Seats in Train");
+        System.out.println("UC12 - Safety Compliance Check for Goods Bogies");
         System.out.println("====================================\n");
 
-        // --------------------------------------------
-        // Create list of bogies
-        // --------------------------------------------
-        List<Bogie> bogies = new ArrayList<>();
+        // Create list
+        List<GoodsBogie> bogies = new ArrayList<>();
 
-        bogies.add(new Bogie("Sleeper", 72));
-        bogies.add(new Bogie("AC Chair", 56));
-        bogies.add(new Bogie("First Class", 24));
-        bogies.add(new Bogie("Sleeper", 70));
+        // ⚠️ Yahan intentionally INVALID case dala hai (screenshot jaisa)
+        bogies.add(new GoodsBogie("Cylindrical", "Petroleum"));
+        bogies.add(new GoodsBogie("Box", "Grain"));
+        bogies.add(new GoodsBogie("Cylindrical", "Coal")); // ❌ invalid
 
-        // --------------------------------------------
         // Display bogies
-        // --------------------------------------------
-        System.out.println("Bogies in Train:");
-        for (Bogie b : bogies) {
-            System.out.println(b.name + " -> " + b.capacity);
+        System.out.println("Goods Bogies in Train:");
+        for (GoodsBogie b : bogies) {
+            System.out.println(b.type + " -> " + b.cargo);
         }
 
-        // --------------------------------------------
-        // AGGREGATE using map + reduce
-        // --------------------------------------------
-        int totalSeats = bogies.stream()
-                .map(b -> b.capacity)        // extract capacity
-                .reduce(0, Integer::sum);   // sum all values
+        // Safety check
+        boolean isSafe = bogies.stream()
+                .allMatch(b ->
+                        !b.type.equals("Cylindrical") ||
+                                b.cargo.equals("Petroleum")
+                );
 
-        // --------------------------------------------
-        // Display result
-        // --------------------------------------------
-        System.out.println("\nTotal Seating Capacity of Train: " + totalSeats);
+        // Output
+        System.out.println("\nSafety Compliance Status:");
+        System.out.println("Train formation is " + (isSafe ? "SAFE" : "NOT SAFE"));
 
-        // --------------------------------------------
-        // Completion message
-        // --------------------------------------------
-        System.out.println("\nUC10 aggregation completed...");
+        System.out.println("\nUC12 safety validation completed...");
     }
 }

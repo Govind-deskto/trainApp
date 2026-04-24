@@ -1,19 +1,17 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /*
  * ============================================================
  * MAIN CLASS - TrainConsistMgmt
  * ============================================================
  *
- * Use Case 1: Initialize Train and Display Consist Summary
+ * Use Case 3: Track Unique Bogie IDs
  *
  * Description:
- * This class represents the entry point of the Train Consist
- * Management Application.
+ * This class ensures duplicate bogie IDs are not added
+ * using HashSet.
  *
- * Author: Developer
- * Version: 1.0
  * ============================================================
  */
 
@@ -21,24 +19,30 @@ public class TrainConsistMgmt {
 
     public static void main(String[] args) {
 
-        // Display welcome banner
+        // Header
         System.out.println("====================================");
-        System.out.println("=== Train Consist Management App ===");
-        System.out.println("====================================");
+        System.out.println("UC3 - Track Unique Bogie IDs");
+        System.out.println("====================================\n");
 
-        // Create dynamic list
-        List<String> trainConsist = new ArrayList<>();
+        // Create HashSet
+        Set<String> bogies = new HashSet<>();
 
-        // Initialization message
-        System.out.println("\nTrain initialized successfully...");
+        // Add bogie IDs (with duplicates)
+        bogies.add("BG101");
+        bogies.add("BG102");
+        bogies.add("BG103");
+        bogies.add("BG101"); // duplicate
+        bogies.add("BG102"); // duplicate
 
-        // Initial bogie count
-        System.out.println("Initial Bogie Count : " + trainConsist.size());
+        // Display result
+        System.out.println("Bogie IDs After Insertion:");
+        System.out.println(bogies);
 
-        // Current consist
-        System.out.println("Current Train Consist : " + trainConsist);
+        // Note
+        System.out.println("\nNote:");
+        System.out.println("Duplicates are automatically ignored by HashSet.");
 
-        // Ready message
-        System.out.println("\nSystem ready for operations...");
+        // Final message
+        System.out.println("\nUC3 uniqueness validation completed...");
     }
 }
